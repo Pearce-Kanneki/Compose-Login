@@ -14,13 +14,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kanneki.composelogin.ui.theme.Purple500
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.kanneki.composelogin.ui.theme.accent
+import com.kanneki.composelogin.ui.theme.primary
 
-@Preview(showBackground = true)
+
 @Composable
-fun IntroPage() {
+fun IntroPage(navController: NavController) {
     Box {
-        Surface(color = Purple500, modifier = Modifier.fillMaxSize()) {
+        Surface(color = primary, modifier = Modifier.fillMaxSize()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
@@ -30,10 +33,10 @@ fun IntroPage() {
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(.8f),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Cyan),
-                    onClick = { /*TODO*/ }
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accent),
+                    onClick = { navController.navigate("login") }
                 ) {
-                    Text(text = "Login", color = Color.Black)
+                    Text(text = "Login", color = Color.White)
                 }
 
                 OutlinedButton(
@@ -41,8 +44,8 @@ fun IntroPage() {
                         .fillMaxWidth(.8f)
                         .padding(top = 20.dp),
                     border = BorderStroke(width = 1.dp, color = Color.White),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Purple500),
-                    onClick = { /*TODO*/ }
+                    colors = ButtonDefaults.buttonColors(backgroundColor = primary),
+                    onClick = { navController.navigate("signup") }
                 ) {
                     Text(text = "SignUp", color = Color.White)
                 }
@@ -84,4 +87,11 @@ fun IntroPage() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PrevIntro() {
+    val nav = rememberNavController()
+    IntroPage(navController = nav)
 }

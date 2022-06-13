@@ -16,15 +16,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kanneki.composelogin.ui.theme.accent
 import com.kanneki.composelogin.ui.theme.primary
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun LoginPage() {
+fun SignupPage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,63 +50,12 @@ fun LoginPage() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        InputLayout()
-
-        Text(
-            text = "Forget Password",
-            modifier = Modifier
-                .fillMaxWidth(.8f)
-                .padding(top = 10.dp),
-            textAlign = TextAlign.End,
-            color = Color.White
-        )
-        Text(
-            text = "OR",
-            style = MaterialTheme.typography.h6,
-            color = Color.White,
-            modifier = Modifier.padding(top = 16.dp)
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(.8f)
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.google),
-                    contentDescription = "google"
-                )
-            }
-
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.facebook),
-                    contentDescription = "facebook"
-                )
-            }
-
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.github),
-                    contentDescription = "github"
-                )
-            }
-        }
-
-        Text(
-            text = "Signup",
-            color = Color.White,
-            style = MaterialTheme.typography.body2,
-            modifier = Modifier.padding(top = 16.dp)
-        )
+        SignupInput()
     }
-
 }
 
 @Composable
-fun InputLayout() {
+fun SignupInput() {
     Column(
         modifier = Modifier
             .fillMaxWidth(.8f)
@@ -126,6 +74,27 @@ fun InputLayout() {
             },
             value = "",
             label = { Text(text = "Email") },
+            onValueChange = {},
+            modifier = Modifier
+                .fillMaxWidth(.85f)
+                .padding(top = 20.dp),
+            shape = RoundedCornerShape(40.dp),
+            maxLines = 1,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color(0xFF3D7CFB),
+                backgroundColor = Color.White
+            ),
+        )
+
+        OutlinedTextField(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "account"
+                )
+            },
+            value = "",
+            label = { Text(text = "User Name") },
             onValueChange = {},
             modifier = Modifier
                 .fillMaxWidth(.85f)
@@ -168,7 +137,7 @@ fun InputLayout() {
             colors = ButtonDefaults.buttonColors(backgroundColor = accent),
             onClick = { /*TODO*/ }
         ) {
-            Text(text = "Login", color = Color.White)
+            Text(text = "Signup", color = Color.White)
         }
 
         Spacer(modifier = Modifier.height(20.dp))
