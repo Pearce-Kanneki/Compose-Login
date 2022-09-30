@@ -16,12 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.kanneki.composelogin.screen.intro.IntroEvent
+import com.kanneki.composelogin.screen.intro.IntroViewModel
 import com.kanneki.composelogin.ui.theme.accent
 import com.kanneki.composelogin.ui.theme.primary
 
 
 @Composable
-fun IntroPage(navController: NavController) {
+fun IntroScreen(viewModel: IntroViewModel) {
     Box {
         Surface(color = primary, modifier = Modifier.fillMaxSize()) {
             Column(
@@ -34,7 +36,7 @@ fun IntroPage(navController: NavController) {
                 Button(
                     modifier = Modifier.fillMaxWidth(.8f),
                     colors = ButtonDefaults.buttonColors(backgroundColor = accent),
-                    onClick = { navController.navigate("login") }
+                    onClick = { viewModel.onEvent(IntroEvent.NavLogin) }
                 ) {
                     Text(text = "Login", color = Color.White)
                 }
@@ -45,7 +47,7 @@ fun IntroPage(navController: NavController) {
                         .padding(top = 20.dp),
                     border = BorderStroke(width = 1.dp, color = Color.White),
                     colors = ButtonDefaults.buttonColors(backgroundColor = primary),
-                    onClick = { navController.navigate("signup") }
+                    onClick = { viewModel.onEvent(IntroEvent.NavSignup) }
                 ) {
                     Text(text = "SignUp", color = Color.White)
                 }
@@ -92,6 +94,5 @@ fun IntroPage(navController: NavController) {
 @Preview
 @Composable
 fun PrevIntro() {
-    val nav = rememberNavController()
-    IntroPage(navController = nav)
+    IntroScreen(IntroViewModel())
 }

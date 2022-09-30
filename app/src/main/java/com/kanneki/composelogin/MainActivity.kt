@@ -3,12 +3,15 @@ package com.kanneki.composelogin
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Modifier
+import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.kanneki.composelogin.screen.intro.IntroEvent
+import com.kanneki.composelogin.screen.intro.IntroViewModel
+import com.kanneki.composelogin.screen.login.LoginViewModel
+import com.kanneki.composelogin.screen.signup.SignupViewModel
 import com.kanneki.composelogin.ui.theme.ComposeLoginTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,15 +21,25 @@ class MainActivity : ComponentActivity() {
             ComposeLoginTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "intro") {
-                    composable("intro") {
-                        IntroPage(navController)
+                NavHost(navController = navController, startDestination = Until.NAV_INTRO) {
+                    composable(Until.NAV_INTRO) {
+                        val introViewModel by viewModels<IntroViewModel>()
+                        IntroScreen(introViewModel)
+
+                        LaunchedEffect(introViewModel.navValue) {
+                            if (introViewModel.navValue.isNotBlank()) {
+                                navController.navigate(introViewModel.navValue)
+                                introViewModel.onEvent(IntroEvent.NavClear)
+                            }
+                        }
                     }
-                    composable("login") {
-                        LoginPage()
+                    composable(Until.NAV_LOGIN) {
+                        val loginViewModel by viewModels<LoginViewModel>()
+                        LoginScreen(loginViewModel)
                     }
-                    composable("signup") {
-                        SignupPage()
+                    composable(Until.NAV_SIGNUP) {
+                        val signupViewModel by viewModels<SignupViewModel>()
+                        SignupScreen(signupViewModel)
                     }
                 }
 

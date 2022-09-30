@@ -18,12 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kanneki.composelogin.data.SignupData
+import com.kanneki.composelogin.screen.signup.SignupEvent
+import com.kanneki.composelogin.screen.signup.SignupViewModel
 import com.kanneki.composelogin.ui.theme.accent
 import com.kanneki.composelogin.ui.theme.primary
 
-@Preview
 @Composable
-fun SignupPage() {
+fun SignupScreen(viewModel: SignupViewModel) {
+    val state = viewModel.state
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,12 +54,14 @@ fun SignupPage() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SignupInput()
+        SignupInput(state) {
+            viewModel.onEvent(it)
+        }
     }
 }
 
 @Composable
-fun SignupInput() {
+fun SignupInput(state: SignupData, callback: (SignupEvent) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth(.8f)
@@ -72,9 +78,11 @@ fun SignupInput() {
                     contentDescription = "email"
                 )
             },
-            value = "",
+            value = state.email,
             label = { Text(text = "Email") },
-            onValueChange = {},
+            onValueChange = {
+                callback(SignupEvent.SetEmail(it))
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .padding(top = 20.dp),
@@ -93,9 +101,11 @@ fun SignupInput() {
                     contentDescription = "account"
                 )
             },
-            value = "",
+            value = state.userName,
             label = { Text(text = "User Name") },
-            onValueChange = {},
+            onValueChange = {
+                callback(SignupEvent.SetUserName(it))
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .padding(top = 20.dp),
@@ -114,9 +124,11 @@ fun SignupInput() {
                     contentDescription = "account"
                 )
             },
-            value = "",
+            value = state.password,
             label = { Text(text = "Password") },
-            onValueChange = {},
+            onValueChange = {
+                callback(SignupEvent.SetPassword(it))
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .padding(top = 20.dp),
@@ -142,4 +154,11 @@ fun SignupInput() {
 
         Spacer(modifier = Modifier.height(20.dp))
     }
+}
+
+@Preview
+@Composable
+fun SignupScreenPreview() {
+    val viewModel = SignupViewModel()
+    SignupScreen(viewModel = viewModel)
 }

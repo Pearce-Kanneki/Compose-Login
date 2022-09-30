@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,12 +18,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kanneki.composelogin.data.LoginData
+import com.kanneki.composelogin.screen.login.LoginEvent
+import com.kanneki.composelogin.screen.login.LoginViewModel
 import com.kanneki.composelogin.ui.theme.accent
 import com.kanneki.composelogin.ui.theme.primary
 
-@Preview(showBackground = true)
 @Composable
-fun LoginPage() {
+fun LoginScreen(viewModel: LoginViewModel) {
+
+    val state = viewModel.state
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +55,9 @@ fun LoginPage() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        InputLayout()
+        InputLayout(state) {
+            viewModel.onEvent(it)
+        }
 
         Text(
             text = "Forget Password",
@@ -107,7 +113,7 @@ fun LoginPage() {
 }
 
 @Composable
-fun InputLayout() {
+fun InputLayout(state: LoginData, callback: (LoginEvent) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth(.8f)
@@ -124,9 +130,11 @@ fun InputLayout() {
                     contentDescription = "email"
                 )
             },
-            value = "",
+            value = state.account,
             label = { Text(text = "Email") },
-            onValueChange = {},
+            onValueChange = {
+                callback(LoginEvent.SetAccount(it))
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .padding(top = 20.dp),
@@ -145,9 +153,11 @@ fun InputLayout() {
                     contentDescription = "account"
                 )
             },
-            value = "",
+            value = state.password,
             label = { Text(text = "Password") },
-            onValueChange = {},
+            onValueChange = {
+                callback(LoginEvent.SetPassword(it))
+            },
             modifier = Modifier
                 .fillMaxWidth(.85f)
                 .padding(top = 20.dp),
@@ -173,4 +183,11 @@ fun InputLayout() {
 
         Spacer(modifier = Modifier.height(20.dp))
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    val viewModel = LoginViewModel()
+    LoginScreen(viewModel = viewModel)
 }
